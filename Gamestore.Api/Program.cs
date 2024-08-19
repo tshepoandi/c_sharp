@@ -76,6 +76,7 @@ app.MapPut("/games/{id}", (int id, Game updatedGame) =>
 app.MapDelete("/games/{id}", (int id) => 
 {
     Game? existingGame = games.Find(game => game.id == id);
+    
     if(game is not null)
     {
         games.Remove(game);
