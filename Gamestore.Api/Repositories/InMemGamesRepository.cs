@@ -2,12 +2,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Gamestore.Api.Entities;
 
 namespace Gamestore.Api.Repositories
 {
     public class InMemGamesRepository
     {
-        List<Game> games = new()
+        private readonly List<Game> games = new()
             {
                 new Game()
                 {
@@ -39,10 +40,29 @@ namespace Gamestore.Api.Repositories
                     
                 },
             };
-    }
+            public IEnumerable<Game> GetAll()
+            {
+                return games;
+            }
+            public Game? Get(int id)
+            {
+                return games.Find(game => game.Id == id);
+            }
+            public void Create(Game game)
+            {
+                game.Id = games.Max(game => game.Id) + 1;
+                games.Add(game);
+            }
+            public void Update(Game updatedGame)
+            {
+                var index = games.FindIndex(game => game.Id == updatedGame.Id);
+                games[index] = updatedGame;
+            }
 
-    public IEnumerable<Game> GetAll()
-    {
-        return games;
+            public void Delete(int id)
+            {
+                var index = games.FindIndex(game => game.Id == id);
+                games.RemoveAt(index);
+            }
     }
 }
