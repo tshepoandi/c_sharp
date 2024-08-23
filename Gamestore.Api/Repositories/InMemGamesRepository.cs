@@ -40,4 +40,9 @@ namespace Gamestore.Api.Repositories
                 },
             };
     }
+
+    public IEnumerable<Game> GetAll()
+    {
+        return games;
+    }
 }
