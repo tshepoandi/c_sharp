@@ -1,7 +1,7 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace GameStore.Api.Entities
+namespace Gamestore.Api.Entities
 {
     public class Game
     {
@@ -10,7 +10,7 @@ namespace GameStore.Api.Entities
         [StringLength(50)]
         public required string Name { get; set;} 
 
-        [Range(1,100)]
+        
         public required string Genre { get; set;}
         public decimal Price { get; set;}
         public DateTime ReleaseDate { get; set;}

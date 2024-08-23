@@ -8,6 +8,8 @@
 
   <ItemGroup>
     <PackageReference Include="MinimalApis.Extensions" Version="0.10.1" />
+    <!-- <Compile Include="Endpoints\GamesEndpoints.cs" /> -->
+    <!-- <Compile Include="Entities\Game.cs" /> -->
   </ItemGroup>
 
 </Project>
