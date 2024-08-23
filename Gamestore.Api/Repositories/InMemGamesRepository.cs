@@ -8,7 +8,7 @@ namespace Gamestore.Api.Repositories
 {
     public class InMemGamesRepository
     {
-        private readonly List<Game> games = new()
+        public readonly List<Game> games = new()
             {
                 new Game()
                 {

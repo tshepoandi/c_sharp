@@ -9,15 +9,16 @@ namespace Gamestore.Api.Endpoints
 {
     public static class GamesEndpoints
     {
-         public static RouteGroupBuilder MapGamesEndpoints(this IEndpointRouteBuilder routes)
-         {
+        const string GetGameEndpointName = "getGame"; 
+        public static RouteGroupBuilder MapGamesEndpoints(this IEndpointRouteBuilder routes)
+        {
             InMemGamesRepository repository = new();
-
-            const string GetGameEndpointName = "getGame"; 
 
             var group =  routes.MapGroup("/games")
                 .WithParameterValidation();
-
+            
+            group.MapGet("/hi", ()=> "hi");
+            
             group.MapGet("/", ()=> repository.GetAll());
             group.MapGet("/{id}", (int id) => 
                 {
