@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Gamestore.Api.Entities;
 using Gamestore.Api.Repositories;
-
+using Gamestore.Api.Dtos;
 
 namespace Gamestore.Api.Endpoints
 {
@@ -16,23 +16,30 @@ namespace Gamestore.Api.Endpoints
             var group =  routes.MapGroup("/games")
                 .WithParameterValidation();
             
-            group.MapGet("/hi", (IGameRepository repository)=> "hi");
-            
-            group.MapGet("/", (IGameRepository repository)=> repository.GetAll());
+            group.MapGet("/", (IGameRepository repository)=> 
+                repository.GetAll().Select(game => game.AsDto()));
             group.MapGet("/{id}", (IGameRepository repository,int id) => 
                 {
                     Game? game = repository.Get(id);
-                    return game is not null ? Results.Ok(game) : Results.NotFound();
+                    return game is not null ? Results.Ok(game.AsDto()) : Results.NotFound();
                     
                 }).WithName(GetGameEndpointName);
-            group.MapPost("/", (Game game,IGameRepository repository) => 
+            group.MapPost("/", (CreateGameDto gameDto,IGameRepository repository) => 
                 {
-                   repository.Create(game);
+                    Game game = new()
+                    {
+                        Name = gameDto.Name,
+                        Genre = gameDto.Genre,
+                        Price = gameDto.Price,
+                        ReleaseDate = gameDto.ReleaseDate,
+                        ImageUri = gameDto.ImageUri,
+                    };
+                    repository.Create(game);
                     return Results.CreatedAtRoute(GetGameEndpointName, new {id = game.Id}, game);
                 }
             );
 
-            group.MapPut("/{id}", (IGameRepository repository,int id, Game updatedGame) => 
+            group.MapPut("/{id}", (IGameRepository repository,int id, UpdateGameDto updatedGame) => 
             {
                 Game ? existingGame = repository.Get(id);
 
