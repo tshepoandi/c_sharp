@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Gamestore.Api.Entities;
 using Gamestore.Api.Repositories;
-using Gamestore.Api.IGameRepository;
+
 
 namespace Gamestore.Api.Endpoints
 {
@@ -19,13 +19,13 @@ namespace Gamestore.Api.Endpoints
             group.MapGet("/hi", (IGameRepository repository)=> "hi");
             
             group.MapGet("/", (IGameRepository repository)=> repository.GetAll());
-            group.MapGet("/{id}", (int id) => 
+            group.MapGet("/{id}", (IGameRepository repository,int id) => 
                 {
                     Game? game = repository.Get(id);
                     return game is not null ? Results.Ok(game) : Results.NotFound();
                     
                 }).WithName(GetGameEndpointName);
-            group.MapPost("/", (Game game) => 
+            group.MapPost("/", (Game game,IGameRepository repository) => 
                 {
                    repository.Create(game);
                     return Results.CreatedAtRoute(GetGameEndpointName, new {id = game.Id}, game);

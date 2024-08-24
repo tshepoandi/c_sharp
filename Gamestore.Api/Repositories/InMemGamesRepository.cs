@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Gamestore.Api.Entities;
-using Gamestore.Api.IGamesRepository;
+
 namespace Gamestore.Api.Repositories
 {
-    public class InMemGamesRepository : IGamesRepository
+    public class InMemGamesRepository : IGameRepository
     {
         public readonly List<Game> games = new()
             {
