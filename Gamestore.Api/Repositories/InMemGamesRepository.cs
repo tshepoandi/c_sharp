@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Gamestore.Api.Entities;
-
+using Gamestore.Api.IGamesRepository;
 namespace Gamestore.Api.Repositories
 {
-    public class InMemGamesRepository
+    public class InMemGamesRepository : IGamesRepository
     {
         public readonly List<Game> games = new()
             {
@@ -18,7 +18,6 @@ namespace Gamestore.Api.Repositories
                     Price = 19.99m,
                     ReleaseDate = new DateTime(1991,2,1),
                     ImageUri = "",
-
                 },
                 new Game()
                 {

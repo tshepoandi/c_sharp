@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Gamestore.Api.Entities;
 using Gamestore.Api.Repositories;
+using Gamestore.Api.IGameRepository;
 
 namespace Gamestore.Api.Endpoints
 {
@@ -12,14 +13,12 @@ namespace Gamestore.Api.Endpoints
         const string GetGameEndpointName = "getGame"; 
         public static RouteGroupBuilder MapGamesEndpoints(this IEndpointRouteBuilder routes)
         {
-            InMemGamesRepository repository = new();
-
             var group =  routes.MapGroup("/games")
                 .WithParameterValidation();
             
-            group.MapGet("/hi", ()=> "hi");
+            group.MapGet("/hi", (IGameRepository repository)=> "hi");
             
-            group.MapGet("/", ()=> repository.GetAll());
+            group.MapGet("/", (IGameRepository repository)=> repository.GetAll());
             group.MapGet("/{id}", (int id) => 
                 {
                     Game? game = repository.Get(id);
@@ -33,9 +32,7 @@ namespace Gamestore.Api.Endpoints
                 }
             );
 
-
-            // group.MapGet()
-            group.MapPut("/{id}", (int id, Game updatedGame) => 
+            group.MapPut("/{id}", (IGameRepository repository,int id, Game updatedGame) => 
             {
                 Game ? existingGame = repository.Get(id);
 
@@ -53,7 +50,7 @@ namespace Gamestore.Api.Endpoints
                 return Results.NoContent();
             });
 
-            group.MapDelete("/{id}", (int id) => 
+            group.MapDelete("/{id}", (IGameRepository repository,int id) => 
             {
                 Game? game = repository.Get(id);
                 
